@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Light x SonicSVM Trading Event</title>
+  <link rel="icon" href="https://light.dangervalley.com/static/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <img src="https://light.dangervalley.com/static/logo.svg" alt="Light Logo" />
+      <h1>Trading Event — Light x SonicSVM</h1>
+    </div>
+    <div class="socials">
+      <a href="https://x.com/lightdotapp" target="_blank" title="X">
+        <img src="icons/twitter.svg" alt="X/Twitter" />
+      </a>
+      <a href="https://t.me/LightAppNews" target="_blank" title="Telegram">
+        <img src="icons/telegram.svg" alt="Telegram" />
+      </a>
+      <a href="https://light.app" target="_blank" title="Website">
+        <img src="icons/globe.svg" alt="Website" />
+      </a>
+      <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="section">
+    <h2>Prize Pool</h2>
+    <div class="progress-container">
+      <div id="progress-bar" class="progress-bar">Loading...</div>
+    </div>
+    <p id="prize-info"></p>
+    <div style="text-align: center;">
+      <a class="join-btn" href="https://t.me/light_sol_bot?start=c-sonic" target="_blank">JOIN TOURNAMENT</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Leaderboard (Top 20)</h2>
+    <table id="leaderboard">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Wallet</th>
+          <th>Volume</th>
+          <th>Prize</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- dynamic rows -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="trading-buttons">
+      <a href="https://t.me/light_sol_bot?start=c-sonic-ca-7yt6vPUrSCxEq3cQpQ6XKynttH5MMPfT93N1AqnosyQ3" target="_blank" class="trade-btn trade-chill">
+        TRADE CHILL
+      </a>
+      <a href="https://t.me/light_sol_bot?start=c-sonic-ca-mrujEYaN1oyQXDHeYNxBYpxWKVkQ2XsGxfznpifu4aL" target="_blank" class="trade-btn trade-sonic">
+        TRADE SONIC
+      </a>
+    </div>
+  </div>
+
+  <footer>
+  </footer>
+
+  <script>
+    const totalVolume = 1780000;
+    const goalVolume = 3000000;
+    const prizePerMillion = 2500;
+    const maxPrize = 10000;
+
+    const leaderboardData = [
+      { wallet: '7F92...kYxT', volume: 312000 },
+      { wallet: '2vHG...pWJf', volume: 278000 },
+      { wallet: '8Gbx...94Ad', volume: 194000 },
+      { wallet: '9LzZ...rTkF', volume: 120000 },
+      { wallet: '4X1A...WsPq', volume: 115000 },
+      // ... up to 20
+    ];
+
+    const progressBar = document.getElementById('progress-bar');
+    const prizeInfo = document.getElementById('prize-info');
+    const progressPercent = Math.min((totalVolume / goalVolume) * 100, 100);
+    const prizeUnlocked = Math.min(Math.floor(totalVolume / 1_000_000) * prizePerMillion, maxPrize);
+    const nextThreshold = Math.min(Math.ceil(totalVolume / 1_000_000) * 1_000_000, goalVolume);
+    const remaining = nextThreshold - totalVolume;
+
+    progressBar.style.width = progressPercent + '%';
+    progressBar.innerText = `$${prizeUnlocked} unlocked`;
+
+    prizeInfo.innerText = `Current Volume: $${totalVolume.toLocaleString()} / $${goalVolume.toLocaleString()} — $${remaining.toLocaleString()} left to unlock next prize`;
+
+    const tbody = document.querySelector('#leaderboard tbody');
+    leaderboardData
+      .sort((a, b) => b.volume - a.volume)
+      .forEach((entry, index) => {
+        const prize = index < 20 ? Math.round(prizeUnlocked * ((20 - index) / 210)) : 0;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${entry.wallet}</td>
+          <td>$${entry.volume.toLocaleString()}</td>
+          <td>${index < 20 ? `$${prize}` : '-'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    
+    // Check for saved theme preference or default to dark mode
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', savedTheme);
+    
+    // Update toggle button state
+    function updateToggleState() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.classList.toggle('dark', isDark);
+    }
+    
+    updateToggleState();
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateToggleState();
+    });
+  </script>
+</body>
+</html>
