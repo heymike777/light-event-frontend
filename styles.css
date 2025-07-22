@@ -146,6 +146,71 @@ th {
   font-weight: 600;
 }
 
+/* Leaderboard cards for mobile */
+.leaderboard-cards {
+  display: none;
+  margin-top: 20px;
+}
+
+.leaderboard-card {
+  background: var(--bg-color);
+  border: 1px solid var(--gray);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.leaderboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .leaderboard-card:hover {
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.card-rank {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent-color);
+  min-width: 40px;
+  text-align: center;
+}
+
+.card-rank.top-3 {
+  font-size: 28px;
+}
+
+.card-content {
+  flex: 1;
+  margin-left: 16px;
+}
+
+.card-wallet {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: var(--text-color);
+}
+
+.card-volume {
+  font-size: 14px;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.card-prize {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--accent-color);
+  text-align: right;
+  min-width: 80px;
+}
+
 .join-btn {
   display: inline-block;
   margin-top: 20px;
@@ -172,29 +237,61 @@ th {
 }
 
 .trade-btn {
-  display: inline-block;
-  background-color: var(--accent-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent-color) 0%, #ffe94d 100%);
   color: black;
   padding: 16px 32px;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 18px;
   font-weight: 700;
   text-decoration: none;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(253, 216, 53, 0.2);
+  position: relative;
+  overflow: hidden;
+  min-height: 56px;
+}
+
+.trade-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.trade-btn:hover::before {
+  left: 100%;
 }
 
 .trade-btn:hover {
-  background-color: #ffe94d;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(253, 216, 53, 0.3);
+  box-shadow: 0 6px 16px rgba(253, 216, 53, 0.4);
 }
+
+.trade-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(253, 216, 53, 0.3);
+}
+
+
 
 footer {
   margin-top: 60px;
   text-align: center;
+}
+
+/* Mobile socials - hidden by default, shown on mobile */
+.mobile-socials {
+  display: none;
 }
 
 .socials {
@@ -225,21 +322,210 @@ footer {
 }
 
 @media (max-width: 600px) {
-  table, thead, tbody, th, td, tr {
+  body {
+    padding: 16px;
+  }
+  
+  header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .header-left {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  h1 {
+    font-size: 20px;
+  }
+  
+  .socials {
+    align-self: flex-end;
+    display: flex;
+    gap: 16px;
+  }
+  
+  /* Hide header socials on mobile, show footer socials */
+  header .socials {
+    display: none;
+  }
+  
+  .mobile-socials {
     display: block;
   }
-  tr {
-    margin-bottom: 12px;
-    border: 1px solid var(--gray);
+  
+  .socials a {
+    margin: 0;
+    padding: 8px;
     border-radius: 8px;
-    padding: 10px;
+    background: var(--gray);
+    transition: all 0.2s ease;
   }
-  td {
-    padding: 6px 0;
+  
+  .socials a:hover {
+    background: var(--accent-color);
+    transform: translateY(-2px);
   }
-  td::before {
-    content: attr(data-label);
-    font-weight: bold;
+  
+  .socials a img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* Mobile socials in footer */
+  .mobile-socials {
+    display: block !important;
+    margin-top: 40px;
+    text-align: center;
+  }
+  
+  .mobile-socials h3 {
+    font-size: 16px;
+    margin-bottom: 16px;
+    color: var(--text-color);
+    opacity: 0.8;
+  }
+  
+  .mobile-socials .socials {
+    justify-content: center;
+    align-self: center;
+    margin-top: 0;
+  }
+  
+  .mobile-socials .socials a {
+    padding: 12px;
+    background: var(--gray);
+    border-radius: 12px;
+    margin: 0 8px;
+  }
+  
+  .mobile-socials .socials a img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .mobile-socials .socials .theme-toggle {
+    padding: 12px;
+    background: var(--gray);
+    border-radius: 12px;
+    margin: 0 8px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+  }
+  
+  .mobile-socials .socials .theme-toggle:hover {
+    background: var(--accent-color);
+    transform: translateY(-2px);
+  }
+  
+  .mobile-socials .socials .theme-toggle svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* Mobile leaderboard - hide table, show cards */
+  .leaderboard-table {
+    display: none;
+  }
+  
+  .leaderboard-cards {
     display: block;
   }
+  
+  .leaderboard-card {
+    background: var(--bg-color);
+    border: 1px solid var(--gray);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+  }
+  
+  .leaderboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  [data-theme="dark"] .leaderboard-card:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  }
+  
+  .card-rank {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent-color);
+    min-width: 40px;
+    text-align: center;
+  }
+  
+  .card-rank.top-3 {
+    font-size: 28px;
+  }
+  
+  .card-content {
+    flex: 1;
+    margin-left: 16px;
+  }
+  
+  .card-wallet {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: var(--text-color);
+  }
+  
+  .card-volume {
+    font-size: 14px;
+    color: var(--text-color);
+    opacity: 0.8;
+  }
+  
+  .card-prize {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--accent-color);
+    text-align: right;
+    min-width: 80px;
+  }
+  
+  .trading-buttons {
+    flex-direction: row;
+    gap: 12px;
+    margin-top: 32px;
+    justify-content: center;
+  }
+  
+  .trade-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    min-height: auto;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--accent-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+  
+  .trade-btn:hover {
+    background-color: #ffe94d;
+  }
+  
+
 } 
