@@ -87,7 +87,7 @@
         <tr>
           <th>#</th>
           <th>Wallet</th>
-          <th>Volume</th>
+          <th>Points</th>
           <th>Prize</th>
         </tr>
       </thead>
@@ -183,7 +183,7 @@
       cardsContainer.innerHTML = ''; // Clear existing cards
       
       leaderboardData
-        .sort((a, b) => b.volume - a.volume)
+        .sort((a, b) => b.points - a.points)
         .forEach((entry, index) => {
           const rank = index + 1;
           const isTop3 = rank <= 3;
@@ -193,7 +193,7 @@
           tr.innerHTML = `
             <td>${rank}</td>
             <td>${entry.walletAddress}</td>
-            <td>$${entry.volume.toLocaleString()}</td>
+            <td>${entry.points}</td>
             <td>${entry.prize}</td>
           `;
           tbody.appendChild(tr);
@@ -205,7 +205,7 @@
             <div class="card-rank ${isTop3 ? 'top-3' : ''}">${rank}</div>
             <div class="card-content">
               <div class="card-wallet">${entry.walletAddress}</div>
-              <div class="card-volume">$${entry.volume.toLocaleString()}</div>
+              <div class="card-volume">${entry.points}</div>
             </div>
             <div class="card-prize">${entry.prize}</div>
           `;
