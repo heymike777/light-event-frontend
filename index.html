@@ -179,11 +179,11 @@
       const volumeNeededForCurrentMillion = currentMillionEnd - currentMillionStart;
       const progressPercent = Math.min((volumeInCurrentMillion / volumeNeededForCurrentMillion) * 100, 100);
       
-      const prizeUnlocked = Math.min(Math.floor(totalVolume / 1_000_000 + 1) * prizePerMillion, maxPrize);
+    //   const prizeUnlocked = Math.min(Math.floor(totalVolume / 1_000_000 + 1) * prizePerMillion, maxPrize);
       const remaining = currentMillionEnd - totalVolume;
 
       progressBar.style.width = progressPercent + '%';
-      progressBar.innerText = `$${prizeUnlocked} unlocked`;
+      progressBar.innerText = '';// `$${prizeUnlocked} unlocked`;
 
       if (currentMillion <= 3) {
         prizeInfo.innerText = `$${remaining.toLocaleString()} left to unlock next prize`;
