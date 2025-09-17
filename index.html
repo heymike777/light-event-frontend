@@ -168,15 +168,28 @@
 
       const progressBar = document.getElementById('progress-bar');
       const prizeInfo = document.getElementById('prize-info');
-      const progressPercent = Math.min((totalVolume / goalVolume) * 100, 100);
+      
+      // Calculate current million milestone (1st, 2nd, 3rd, etc.)
+      const currentMillion = Math.floor(totalVolume / 1_000_000) + 1;
+      const currentMillionStart = (currentMillion - 1) * 1_000_000;
+      const currentMillionEnd = Math.min(currentMillion * 1_000_000, goalVolume);
+      
+      // Calculate progress within current million
+      const volumeInCurrentMillion = totalVolume - currentMillionStart;
+      const volumeNeededForCurrentMillion = currentMillionEnd - currentMillionStart;
+      const progressPercent = Math.min((volumeInCurrentMillion / volumeNeededForCurrentMillion) * 100, 100);
+      
       const prizeUnlocked = Math.min(Math.floor(totalVolume / 1_000_000 + 1) * prizePerMillion, maxPrize);
-      const nextThreshold = Math.min(Math.ceil(totalVolume / 1_000_000) * 1_000_000, goalVolume);
-      const remaining = nextThreshold - totalVolume;
+      const remaining = currentMillionEnd - totalVolume;
 
       progressBar.style.width = progressPercent + '%';
       progressBar.innerText = `$${prizeUnlocked} unlocked`;
 
-      prizeInfo.innerText = `Current Volume: $${totalVolume.toLocaleString()} / $${goalVolume.toLocaleString()} — $${remaining.toLocaleString()} left to unlock next prize`;
+      if (currentMillion <= 3) {
+        prizeInfo.innerText = `$${remaining.toLocaleString()} left to unlock next prize`;
+      } else {
+        prizeInfo.innerText = `Goal reached! Total Volume: $${totalVolume.toLocaleString()} / $${goalVolume.toLocaleString()}`;
+      }
 
       // Update leaderboard
       const tbody = document.querySelector('#leaderboard tbody');
